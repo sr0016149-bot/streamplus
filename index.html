@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Streaming Premium</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#0f0f0f;
+color:white;
+overflow-x:hidden;
+}
+
+/* PETALOS */
+.petalos{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+z-index:0;
+}
+
+.petalo{
+position:absolute;
+top:-50px;
+animation:caer linear infinite;
+}
+
+@keyframes caer{
+0%{transform:translateY(-50px) rotate(0);}
+100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
+/* HERO */
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+background:radial-gradient(circle,#ff2e93,#0f0f0f);
+}
+
+.hero h1{
+animation:zoomEntrada 1.5s ease;
+}
+
+@keyframes zoomEntrada{
+from{opacity:0;transform:scale(.6);}
+to{opacity:1;transform:scale(1);}
+}
+
+.btn{
+background:#ff2e93;
+padding:12px 25px;
+border-radius:30px;
+color:white;
+text-decoration:none;
+}
+
+/* PRODUCTOS */
+.productos{
+padding:60px 20px;
+text-align:center;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+max-width:1100px;
+margin:auto;
+}
+
+/* CARD */
+.card{
+background:#1a1a1a;
+padding:20px;
+border-radius:15px;
+transition:.45s;
+position:relative;
+overflow:hidden;
+cursor:pointer;
+}
+
+.card:hover{
+transform:scale(1.12) translateY(-8px);
+box-shadow:0 15px 40px rgba(255,46,147,.5);
+}
+
+/* IMAGEN */
+.card img{
+width:100%;
+height:150px;
+object-fit:contain;
+background:#000;
+padding:10px;
+border-radius:10px;
+margin-bottom:15px;
+transition:.5s;
+}
+
+.card:hover img{
+transform:scale(1.1);
+filter:brightness(1.2);
+}
+
+/* BRILLO */
+.card::after{
+content:"";
+position:absolute;
+top:0;
+left:-120%;
+width:100%;
+height:100%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,.25),
+transparent);
+transition:.7s;
+}
+
+.card:hover::after{
+left:120%;
+}
+
+button{
+background:#ff2e93;
+border:none;
+padding:10px 20px;
+border-radius:20px;
+color:white;
+cursor:pointer;
+}
+
+/* CARRITO */
+.carrito-icono{
+position:fixed;
+top:20px;
+right:20px;
+background:#ff2e93;
+padding:12px 18px;
+border-radius:30px;
+cursor:pointer;
+z-index:999;
+animation:latido 2s infinite;
+}
+
+@keyframes latido{
+0%{transform:scale(1);}
+50%{transform:scale(1.12);}
+100%{transform:scale(1);}
+}
+
+.carrito{
+position:fixed;
+right:-350px;
+top:0;
+width:300px;
+height:100%;
+background:#111;
+padding:20px;
+transition:.4s;
+}
+
+.carrito.activo{right:0;}
+
+/* CONFIANZA */
+.confianza{
+text-align:center;
+padding:60px 20px;
+background:#141414;
+}
+
+.beneficios{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+max-width:900px;
+margin:auto;
+}
+
+.beneficios div{
+background:#1f1f1f;
+padding:25px;
+border-radius:12px;
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+padding:20px;
+background:#111;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="petalos" id="petalos"></div>
+
+<div class="carrito-icono" onclick="toggleCarrito()">
+🛒 <span id="contador">0</span>
+</div>
+
+<div class="carrito" id="carrito">
+<h2>Tu Pedido</h2>
+<ul id="listaCarrito"></ul>
+<p>Total: $<span id="total">0</span></p>
+<button onclick="finalizarCompra()">Enviar Pedido</button>
+</div>
+
+<header class="hero">
+<h1>Streaming Premium</h1>
+<p>Accede a tus plataformas favoritas</p>
+<a href="#productos" class="btn">Ver Planes</a>
+</header>
+
+<section id="productos" class="productos">
+<h2>Lista de Precios</h2>
+
+<div class="grid">
+
+<div class="card"><img src="img/netflix.png"><h3>Netflix</h3><p>$6500</p><button onclick="agregarCarrito('Netflix',6500)">Comprar</button></div>
+<div class="card"><img src="img/disney.png"><h3>Disney+ Estándar</h3><p>$3500</p><button onclick="agregarCarrito('Disney+ Estándar',3500)">Comprar</button></div>
+<div class="card"><img src="img/disney.png"><h3>Disney+ Premium</h3><p>$4500</p><button onclick="agregarCarrito('Disney+ Premium',4500)">Comprar</button></div>
+<div class="card"><img src="img/hbo.png"><h3>HBO Max</h3><p>$3000</p><button onclick="agregarCarrito('HBO Max',3000)">Comprar</button></div>
+<div class="card"><img src="img/prime.png"><h3>Prime Video</h3><p>$3000</p><button onclick="agregarCarrito('Prime Video',3000)">Comprar</button></div>
+<div class="card"><img src="img/crunchyroll.png"><h3>Crunchyroll</h3><p>$2800</p><button onclick="agregarCarrito('Crunchyroll',2800)">Comprar</button></div>
+<div class="card"><img src="img/youtube.png"><h3>YouTube Premium</h3><p>$3500</p><button onclick="agregarCarrito('YouTube Premium',3500)">Comprar</button></div>
+<div class="card"><img src="img/paramount.png"><h3>Paramount+</h3><p>$3000</p><button onclick="agregarCarrito('Paramount+',3000)">Comprar</button></div>
+<div class="card"><img src="img/vix.png"><h3>Vix</h3><p>$2500</p><button onclick="agregarCarrito('Vix',2500)">Comprar</button></div>
+<div class="card"><img src="img/powersignal.png"><h3>Power Signal</h3><p>$4500</p><button onclick="agregarCarrito('Power Signal',4500)">Comprar</button></div>
+
+</div>
+</section>
+
+<!-- ✅ SECCION CONFIANZA -->
+<section class="confianza">
+<h2>¿Por qué elegirnos?</h2>
+
+<div class="beneficios">
+<div>⚡ Entrega inmediata</div>
+<div>🔒 Cuentas seguras</div>
+<div>💬 Soporte 24/7</div>
+<div>✅ Garantía mensual</div>
+</div>
+
+</section>
+
+<footer>
+© 2026 Streaming Premium
+</footer>
+
+<script>
+
+let carrito=[];
+
+function agregarCarrito(nombre,precio){
+carrito.push({nombre,precio});
+actualizarCarrito();
+}
+
+function actualizarCarrito(){
+let lista=document.getElementById("listaCarrito");
+let total=0;
+lista.innerHTML="";
+carrito.forEach(item=>{
+lista.innerHTML+=`<li>${item.nombre} - $${item.precio}</li>`;
+total+=item.precio;
+});
+document.getElementById("total").textContent=total;
+document.getElementById("contador").textContent=carrito.length;
+}
+
+function toggleCarrito(){
+document.getElementById("carrito").classList.toggle("activo");
+}
+
+function finalizarCompra(){
+let numero="5491166112477";
+let mensaje="Hola quiero comprar:%0A";
+carrito.forEach(p=>{
+mensaje+=`- ${p.nombre}%0A`;
+});
+window.open(`https://wa.me/${numero}?text=${mensaje}`,"_blank");
+}
+
+/* PETALOS */
+const contenedor=document.getElementById("petalos");
+function crearPetalo(){
+const petalo=document.createElement("div");
+petalo.classList.add("petalo");
+petalo.innerHTML="🌸";
+petalo.style.left=Math.random()*100+"vw";
+petalo.style.animationDuration=(6+Math.random()*5)+"s";
+petalo.style.fontSize=(15+Math.random()*20)+"px";
+contenedor.appendChild(petalo);
+setTimeout(()=>petalo.remove(),11000);
+}
+setInterval(crearPetalo,400);
+
+</script>
+
+</body>
+</html>
